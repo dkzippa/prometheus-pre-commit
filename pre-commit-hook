@@ -47,7 +47,8 @@ function download_binary_release {
 		echo "Release url: ${RELEASE_URL}"
 
 		mkdir -p $TMP_DIR
-		wget -P $TMP_DIR $RELEASE_URL    
+		# wget -P $TMP_DIR $RELEASE_URL    
+		curl -o "${TMP_DIR}/${RELEASE_FILE}" $RELEASE_URL    
 
 		RELEASE_FILE=`echo $RELEASE_URL| awk -F'/' '{print $NF}'`
 		echo "Release file: ${RELEASE_FILE}"
@@ -132,61 +133,27 @@ function install_gitleaks {
 
 
 main() {
-	# check if it install or regular run
-	if ! [ -z "$1" ] && [ "$1" == "install" ]; then
-		
-		if [ -d .git/hooks ]; then
 
-			# # check if pre-commit hook exists already
-			# if [ -f .git/hooks/pre-commit ]; then
-			# 	echo "There is pre-commit hook already. Do you wish to overwrite it? (y/n) "
+	# check  user.gitleaks-enable
+	PRECOMMIT_ENABLED=$(git config --get --default 1 --int user.gitleaks-enable);
+	echo ""
+	echo "Gitleaks pre-commit enabled: $PRECOMMIT_ENABLED"
+	echo ""
 
+	if [ $PRECOMMIT_ENABLED -eq 1 ]; then
 
-			# 	while true; do
-			# 		read -p "There is pre-commit hook already. Do you wish to overwrite it? (y/n) " yn
-			# 		case $yn in
-			# 			[Yy]* ) yes | cp -rf $SCRIPT_NAME ".git/hooks/pre-commit"; break;;
-			# 			[Nn]* ) exit;;
-			# 			* ) echo "Please answer yes or no.";;
-			# 		esac
-			# 	done			
-
-
-			# else 
-			# 	cp $SCRIPT_NAME ".git/hooks/pre-commit"
-			# fi	
-
-			cp -rf $SCRIPT_NAME ".git/hooks/pre-commit"
-			echo "Pre-commit hook installed."	
-					
+		if  type -P $GITLEAKS_APP_NAME || [ -f "${BIN_DIR}/${GITLEAKS_APP_NAME}" ]; then    		
+			run_gitleaks
 		else
-			echo "Not a git repo."
-			exit 1
+			echo ""    
+			echo "Gitleaks not found in \$PATH. Installling..."    
+			echo ""    
+			install_gitleaks && run_gitleaks
 		fi
-
-		chmod +x ".git/hooks/pre-commit"
-
 	else
-		# check  user.gitleaks-enable
-		PRECOMMIT_ENABLED=$(git config --get --default 1 --int user.gitleaks-enable);
-		echo ""
-		echo "Gitleaks pre-commit enabled: $PRECOMMIT_ENABLED"
-		echo ""
+		exit 0;
+	fi	
 
-		if [ $PRECOMMIT_ENABLED -eq 1 ]; then
-
-			if  type -P $GITLEAKS_APP_NAME || [ -f "${BIN_DIR}/${GITLEAKS_APP_NAME}" ]; then    		
-				run_gitleaks
-			else
-				echo ""    
-				echo "Gitleaks not found in \$PATH. Installling..."    
-				echo ""    
-				install_gitleaks && run_gitleaks
-			fi
-		else
-			exit 0;
-		fi	
-	fi
 }
 
 main "$@"
