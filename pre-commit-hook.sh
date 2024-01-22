@@ -18,7 +18,6 @@ RELEASES_URL=https://api.github.com/repos/gitleaks/gitleaks/releases/latest
 SCRIPT_NAME=pre-commit-hook.sh
 
 ######## ASSIGN #########
-BUILD_INFO=$(git rev-parse --short HEAD)
 
 OS=$(uname)
 ARCH=$(uname -m)
