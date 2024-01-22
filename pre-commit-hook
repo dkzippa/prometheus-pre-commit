@@ -9,7 +9,7 @@ set -e
 
 ######## VARIABLES #########
 TMP_DIR=~/gitleaks-tmp
-BIN_DIR=../../bin
+BIN_DIR=./bin
 GO_APP=go
 WGET_APP=wget
 GITLEAKS_APP_NAME=gitleaks
