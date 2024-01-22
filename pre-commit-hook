@@ -8,7 +8,7 @@ set -e
 
 
 ######## VARIABLES #########
-TMP_DIR=/tmp/gitleaks-tmp
+TMP_DIR=~/gitleaks-tmp
 BIN_DIR=../../bin
 GO_APP=go
 WGET_APP=wget
@@ -47,8 +47,8 @@ function download_binary_release {
 		echo "Release url: ${RELEASE_URL}"
 
 		mkdir -p $TMP_DIR
-		# wget -P $TMP_DIR $RELEASE_URL    
-		curl -o "${TMP_DIR}/${RELEASE_FILE}" $RELEASE_URL    
+		wget -P $TMP_DIR $RELEASE_URL    
+		# curl -o "${TMP_DIR}/${RELEASE_FILE}" $RELEASE_URL    
 
 		RELEASE_FILE=`echo $RELEASE_URL| awk -F'/' '{print $NF}'`
 		echo "Release file: ${RELEASE_FILE}"
