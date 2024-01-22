@@ -21,7 +21,7 @@
 ### Install
   > \* Warning: it will overwrite `.git/hooks/pre-commit`
 - use curl pipe method - go to repo folder and run 
-  - `curl /precommit-hook.sh | sh -s -- install`
+  - `curl https://raw.githubusercontent.com/dkzippa/prometheus-pre-commit-hook/main/pre-commit-hook.sh | sh -s -- install`
 
 - or download to repo folder and run 
     - `sh ./precommit-hook.sh install`
