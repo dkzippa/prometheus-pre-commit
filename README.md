@@ -43,3 +43,6 @@
 
 _License
 This module is licensed under the MIT License. See the LICENSE file for details._
+
+# TEST pre-commit
+TELEBOT_TOKEN=12321321321321321321fdsafdsafdsafdas
